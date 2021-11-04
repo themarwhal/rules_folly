@@ -1,7 +1,7 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-def folly_deps(with_gflags = 1, with_syslibs = 0):
+def folly_deps(with_gflags = 1, use_syslib_double_conversion = 0, use_syslib_zlib = 0, use_syslib_snappy = 0, use_syslib_libevent = 0):
     if with_gflags:
         maybe(
             http_archive,
@@ -27,7 +27,7 @@ glog_library(with_gflags = {})
         ],
     )
 
-    if with_syslibs:
+    if use_syslib_double_conversion:
         maybe(
             native.new_local_repository,
             name = "double-conversion",
@@ -43,7 +43,7 @@ glog_library(with_gflags = {})
             urls = ["https://github.com/google/double-conversion/archive/v3.1.5.tar.gz"],
         )
 
-    if with_syslibs:
+    if use_syslib_zlib:
         maybe(
             native.new_local_repository,
             name = "zlib",
@@ -60,7 +60,7 @@ glog_library(with_gflags = {})
             urls = ["https://github.com/madler/zlib/archive/v1.2.11.tar.gz"],
         )
 
-    if with_syslibs:
+    if use_syslib_snappy:
         maybe(
             native.new_local_repository,
             name = "com_github_google_snappy",
@@ -80,7 +80,7 @@ glog_library(with_gflags = {})
         )
 
     # ===== libevent (libevent.org) dependency =====
-    if with_syslibs:
+    if use_syslib_libevent:
         maybe(
             native.new_local_repository,
             name = "com_github_libevent_libevent",
